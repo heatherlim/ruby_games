@@ -25,7 +25,6 @@ class RomanNumeral
   def to_number
     arr = []
     roman_array = @roman_string.split("")
-    loop_size = roman_array.count
     
     until roman_array.empty?
       if arr.empty?
@@ -44,7 +43,6 @@ class RomanNumeral
   end
   
   def to_roman_numerals(number, array=[])
-    #binding.pry
     return array.join if number.zero? 
     array << highest_decimal_value(number)
     array_sum = array.inject(0) {|sum, x| sum + HASHROMAN[x]}
@@ -62,7 +60,7 @@ class RomanNumeral
       if number - 900 >= 0
         return 'CM'
       elsif number - 500 >= 0 
-        return 'DD'
+        return 'D'
       elsif number - 400 >= 0
         return 'CD'
       else 
