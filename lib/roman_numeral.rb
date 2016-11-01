@@ -12,7 +12,7 @@ class RomanNumeral
     'D'=> 500,
     'M'=> 1000
   }
-  
+
   CONVHASH = {
     4 => {'1' => 'M', '2' => 'MM', '3' => 'MMM', '4' => 'MMMM'},
     3 => { '1' => 'C', '2' => 'CC', '3' => 'CCC', '4' => 'CD', '5' => 'D', '6' => 'DC', '7' => 'DCC', '8' => 'DCCC', '9' => 'CM'},
@@ -29,18 +29,20 @@ class RomanNumeral
     roman_array = @roman_string.split("")
     loop_size = roman_array.count
     
-    for i in 0..loop_size
-      until roman_array.empty?
-        value_1 = roman_array.pop
-        value_2 = roman_array.pop
-        if value_2
-          arr << roman_compare(HASHROMAN[value_1], HASHROMAN[value_2])
+    until roman_array.empty?
+      if arr.empty?
+        arr << HASHROMAN[roman_array.shift]
+      else
+        if arr.last >= HASHROMAN[roman_array.first]
+          arr << HASHROMAN[roman_array.shift]
         else
-          arr << HASHROMAN[value_1]
+          x = HASHROMAN[roman_array.shift] - arr.pop
+          arr << x
         end
       end
     end
-    arr.inject { | sum, n | sum + n}
+    
+    arr.inject(0) {|sum, x| sum + x}
   end
   
   def to_roman_numerals(number)
