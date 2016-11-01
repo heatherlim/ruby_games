@@ -5,19 +5,17 @@ class RomanNumeral
   
   HASHROMAN = {
     'I'=> 1,
+    'IV' => 4,
     'V'=> 5,
     'X'=> 10,
+    'XL' => 40,
     'L'=> 50,
+    'XC' => 90,
     'C'=> 100,
+    'CD' => 400,
+    'CM' => 900,
     'D'=> 500,
     'M'=> 1000
-  }
-
-  CONVHASH = {
-    4 => {'1' => 'M', '2' => 'MM', '3' => 'MMM', '4' => 'MMMM'},
-    3 => { '1' => 'C', '2' => 'CC', '3' => 'CCC', '4' => 'CD', '5' => 'D', '6' => 'DC', '7' => 'DCC', '8' => 'DCCC', '9' => 'CM'},
-    2 => { '1' => 'X', '2' => 'XX', '3' => 'XXX', '4' => 'XL', '5' => 'L', '6' => 'LX', '7' => 'LXX', '8' => 'LXXX', '9' => 'XC'},
-    1 => { '1' => 'I', '2' => 'II', '3' => 'III', '4' => 'IV', '5' => 'V', '6' => 'VI', '7' => 'VII', '8' => 'VIII', '9' => 'VIIII'}
   }
   
   def initialize( numeral_string )
@@ -45,29 +43,55 @@ class RomanNumeral
     arr.inject(0) {|sum, x| sum + x}
   end
   
-  def to_roman_numerals(number)
-    num_array = number.to_s.split("")
-    array = []
-    until num_array.empty?
-      array << CONVHASH[num_array.count][num_array.first]
-      num_array.shift
+  def to_roman_numerals(number, array=[])
+    #binding.pry
+    return array.join if number.zero? 
+    array << highest_decimal_value(number)
+    array_sum = array.inject(0) {|sum, x| sum + HASHROMAN[x]}
+    to_roman_numerals(number - HASHROMAN[array.last], array)
+  end
+  
+  def highest_decimal_value(number)
+    number_of_digits = number.to_s.length
+    
+    if number_of_digits == 4
+      return 'M'
     end
     
-    array.join
-    # return array if number_length.zero? 
-    # num_array = number.to_s.split("")
-    # array << highest_decimal_value(num_array)
-    # to_roman_numerals(number, number_length - 1, array)
-  end
-  
-  def roman_compare(value_1, value_2)
-    if value_2 < value_1
-      value_1 - value_2
-    else
-      value_1 + value_2
+    if number_of_digits == 3
+      if number - 900 >= 0
+        return 'CM'
+      elsif number - 500 >= 0 
+        return 'DD'
+      elsif number - 400 >= 0
+        return 'CD'
+      else 
+        return 'C'
+      end
+    end
+    
+    if number_of_digits == 2
+      if number - 90 >= 0
+        return 'XC'
+      elsif number - 50 >= 0
+        return 'L'
+      elsif number - 40 >= 0
+        return 'XL'
+      else
+        return 'X'
+      end
+    end
+    
+    if number_of_digits == 1
+      if number - 5 >= 0
+        return 'V'
+      elsif number - 4 >= 0
+        return 'IV'
+      else
+        return 'I'
+      end
     end
   end
-  
   
   def +( numeral_string )
     result = self.to_number + numeral_string.to_number
