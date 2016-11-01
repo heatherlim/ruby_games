@@ -1,6 +1,7 @@
 require 'pry'
 class RomanNumeral
-  
+
+  # a dictionary with roman numerals and their number equivalents
   HASHROMAN = {
     'I'=> 1,
     'IV' => 4,
@@ -38,7 +39,7 @@ class RomanNumeral
     arr.inject(0) {|sum, x| sum + x}
   end
   
-# converts numbers to roman numerals
+# it takes a number as a parameter to convert it into a roman numeral. The array is an optional parameter that gets filled each time this method is run. The array is filled by the return value of highest_decimal_value. to_roman_numerals will keep running until the number param is 0.
   def to_roman_numerals(number, array=[])
     return array.join if number.zero? 
     array << highest_decimal_value(number)
@@ -46,7 +47,7 @@ class RomanNumeral
     to_roman_numerals(number - HASHROMAN[array.last], array)
   end
 
-# finds the highest decimal value of a number and returns the roman numeral equivalent
+# accepts an integer as a parameter and finds its highestt decimal value it returns the roman numeral equivalent
   def highest_decimal_value(number)
     number_of_digits = number.to_s.length
     
