@@ -5,6 +5,7 @@ class RomanNumeral
     'I'=> 1,
     'IV' => 4,
     'V'=> 5,
+    'IX' => 9,
     'X'=> 10,
     'XL' => 40,
     'L'=> 50,
@@ -20,6 +21,7 @@ class RomanNumeral
     @roman_string = numeral_string
   end
   
+  # converts roman numerals to numbers
   def to_number
     arr = []
     roman_array = @roman_string.split("")
@@ -36,13 +38,15 @@ class RomanNumeral
     arr.inject(0) {|sum, x| sum + x}
   end
   
+# converts numbers to roman numerals
   def to_roman_numerals(number, array=[])
     return array.join if number.zero? 
     array << highest_decimal_value(number)
     array_sum = array.inject(0) {|sum, x| sum + HASHROMAN[x]}
     to_roman_numerals(number - HASHROMAN[array.last], array)
   end
-  
+
+# finds the highest decimal value of a number and returns the roman numeral equivalent
   def highest_decimal_value(number)
     number_of_digits = number.to_s.length
     
@@ -75,7 +79,9 @@ class RomanNumeral
     end
     
     if number_of_digits == 1
-      if number - 5 >= 0
+      if number - 9 >= 0
+        return 'IX'
+      elsif number - 5 >= 0
         return 'V'
       elsif number - 4 >= 0
         return 'IV'
