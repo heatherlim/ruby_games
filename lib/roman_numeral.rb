@@ -1,8 +1,6 @@
 require 'pry'
 class RomanNumeral
   
-  attr_accessor :roman_string
-  
   HASHROMAN = {
     'I'=> 1,
     'IV' => 4,
@@ -27,15 +25,11 @@ class RomanNumeral
     roman_array = @roman_string.split("")
     
     until roman_array.empty?
-      if arr.empty?
+      if arr.empty? || arr.last >= HASHROMAN[roman_array.first]
         arr << HASHROMAN[roman_array.shift]
       else
-        if arr.last >= HASHROMAN[roman_array.first]
-          arr << HASHROMAN[roman_array.shift]
-        else
-          x = HASHROMAN[roman_array.shift] - arr.pop
-          arr << x
-        end
+        x = HASHROMAN[roman_array.shift] - arr.pop
+        arr << x
       end
     end
     
