@@ -22,7 +22,7 @@ class RomanNumeral
     @roman_string = numeral_string
   end
   
-  # converts roman numerals to numbers
+  # converts roman numerals to numbers. It first splits the roman numeral into an array. With each roman numeral, it will push it onto an array if the array is empty, or if the roman numeral's value is not less than the next element in the roman numeral array. If it is less, it will pop it out of the array, subtract it from the next value in the roman array and then push the result back onto the stack. At the end, the array will sum up all its elements.
   def to_number
     arr = []
     roman_array = @roman_string.split("")
